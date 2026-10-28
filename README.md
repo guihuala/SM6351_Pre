@@ -12,6 +12,14 @@ SM6351 Information Visualization 的英文教学网站，主题为 **用 D3 实�
 
 整个文件夹可以单独分享。D3、数据、脚本和样式均在项目内，教学与图表无需联网；外部数据来源链接需要联网。已移除外部照片及其署名，不再有图片网络依赖。
 
+## GitHub Pages 自动部署
+
+工作流位于 [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)。推送到 `main` 时自动部署，也可在 GitHub 的 Actions 页面选择 **Deploy to GitHub Pages → Run workflow** 手动运行。
+
+首次使用时，在仓库 **Settings → Pages → Build and deployment → Source** 中选择 **GitHub Actions**，然后推送工作流。项目是纯静态网站，无需安装依赖或构建；工作流会发布首页、独立预览页、样式、脚本、数据、练习页及本地 D3。
+
+当前仓库部署成功后的地址为：https://guihuala.github.io/SM6351_Pre/ 。练习页位于该地址下的 `exercises/`。实际发布地址也会显示在工作流的 `github-pages` 部署环境中。
+
 ## 页签
 
 | 页签 | 教学内容 | 课堂用途 |
