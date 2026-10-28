@@ -1,20 +1,22 @@
 # LAX Small Multiples Workshop
 
-SM6351 Information Visualization 的英文交互教学网站，使用 D3.js 和洛杉矶国际机场（LAX）真实月度客流数据，讲解如何构建与交互小多图（Small Multiples）。学习路径为 **Demo → Build → Interact → Practice**。
+SM6351 Information Visualization 的英文交互教学网站，使用 D3.js 和洛杉矶国际机场（LAX）真实月度客流数据，讲解如何构建与交互小多图（Small Multiples）。学习路径为 **Data → Charts → Code → Workspace → Files**。旧链接 `#demo`、`#build`、`#interact` 仍可打开对应的新页面。
 
-项目采用原生 HTML、CSS 和 JavaScript，无需安装前端依赖或执行构建。D3 与 CSV 数据均保存在仓库中。
+项目采用原生 HTML、CSS 和 JavaScript，无需安装前端依赖。D3 与 CSV 数据随完整工程保存在仓库中的 `SM6351_Pre_latest.zip` 内。页面以英文为主，右上角可显示或隐藏中文。
 
 ## 快速开始
 
 ### 本地运行
 
-在项目根目录执行（需已安装 Python 3）：
+先下载并解压 [SM6351_Pre_latest.zip](SM6351_Pre_latest.zip)，将内容放入项目根目录。工程包含当前的多文件源码、数据、字体、未完成练习包和正常的 Pages 工作流。解压时会用当前工程替换根目录的单文件预览首页。
+
+然后在项目根目录执行（需已安装 Python 3）：
 
 ```bash
 python3 -m http.server 8000
 ```
 
-打开 [教学网站](http://localhost:8000/) 或 [课堂练习](http://localhost:8000/exercises/)。也可以在 VS Code 中使用 Live Server 打开 `index.html`。
+打开 [教学网站](http://localhost:8000/) 或 [课堂练习](http://localhost:8000/learn/index.html)。也可以在 VS Code 中使用 Live Server 打开 `index.html`。
 
 源码页面通过 HTTP 加载 CSV，请通过本地服务访问。启动后，图表和教学内容使用本地资源，无需连接外网。
 
@@ -22,31 +24,32 @@ python3 -m http.server 8000
 
 双击 [PREVIEW.html](PREVIEW.html) 可离线查看主站预览，所需样式、脚本、D3 和数据已内嵌。
 
-`PREVIEW.html` 是独立快照，修改 `index.html`、`style.css` 或 `js/` 后不会自动同步到它。开发与课堂练习请使用本地服务运行源码。
+`PREVIEW.html` 是独立快照。解压后的工程另有 `downloads/lax-workspace.html`；修改 `index.html`、`app.css` 或 `app/` 后，可运行 `python scripts/make-offline.py` 重新生成单文件版。开发与课堂练习请使用本地服务运行源码。
 
 ## 教学内容
 
 | 页签 | 内容 |
 | --- | --- |
-| Demo | 完整的小多图，支持年份、进出港、客流类别、坐标轴模式、排序及月份联动 |
-| Build | CSV 解析、分组、月份对齐、共享坐标轴、逐面板绘图，以及叠加图与小多图的对比 |
-| Interact | 通过实时示例讲解选择 → 状态 → 数据处理 → 更新图表的交互链路 |
-| Practice | 两道代码练习、提示、参考答案及独立练习页 |
+| Data | 原始记录、月度汇总，以及相同数据下叠加图与小多图的对比 |
+| Charts | 各航站楼小多图，支持年份、进出港、客流类别、坐标轴模式、排序及年月联动 |
+| Code | 五段关键 D3 片段与运行示例：读取、分组、月份对齐、坐标轴、折线和控件 |
+| Workspace | 两道可编辑代码练习、分步提示、短答案、运行结果和独立练习页 |
+| Files | 数据字段、缺失记录说明和未完成练习包 |
 
-Build 和 Interact 中的代码为带上下文的关键片段，完整实现见对应源文件。
+Code 保留了读取 CSV、分组、月份对齐、共享坐标轴和逐面板绘图的说明。控件示例继续展示“选择 → 状态 → 数据处理 → 更新图表”的交互链路。网页只展示带上下文的关键片段，完整实现见解压后的对应源文件。
 
 ## 课堂练习
 
-通过本地服务打开 [exercises/index.html](exercises/index.html)，修改 [exercises/exercise.js](exercises/exercise.js) 中的两个 TODO：
+解压完整工程后，通过本地服务打开 `learn/index.html`，修改 `learn/choices.js` 中的两个 TODO：
 
-1. `chooseScale(selected)`：让所选值控制共享或独立纵轴。
-2. `chooseTraffic(selected)`：让所选值控制国内或国际客流筛选。
+1. `peakMonths(values, key)`：返回每张图达到最高客流的所有月份。
+2. `orderPanels(panels, mode)`：选择 Volume 时，按已报告全年合计从高到低排列图表。
 
-初始代码固定返回 `shared` 和 `Both`，因此这两个选择控件暂时不会改变图表；这是练习的预期起点。
+初始代码返回空的峰值数组，并保留航站楼原顺序；这是练习的预期起点。练习使用快照中最新完整报告年（2022 年）的四个航站楼国内客流。
 
-保存后刷新页面，检查纵轴上限、线条类别、已应用状态和已报告总量是否随选择更新。练习使用快照中最新完整报告年（当前为 2022 年）。
+保存后刷新本地练习页面，检查四张图是否出现峰值月份，以及 Volume 顺序是否变为 T2 → T1 → T6 → TBIT。切回 Terminal order 后应恢复 T1 → T2 → T6 → TBIT。标注和排序不改变客流数字。
 
-参考答案见 [exercises/reference-answers.js](exercises/reference-answers.js)，该文件不会自动加载。页面不提供在线代码编辑器或自动评分。
+主站 Workspace 提供两处短编辑区，点击 Run code 可运行并检查结果；“View & apply answer” 会填入当前题目的答案并自动运行，保留另一题的内容。展示者参考答案为解压后的 `learn/answers.js`，该文件不会被课堂页面自动加载。发给同学的 `downloads/lax-workshop-student.zip` 不包含答案文件。
 
 ## 数据说明
 
@@ -79,38 +82,54 @@ Build 和 Interact 中的代码为带上下文的关键片段，完整实现见�
 2. 将工作流与项目文件提交并推送到 `main`。
 3. 在 **Actions → Deploy to GitHub Pages** 查看结果；也可以选择 **Run workflow** 手动部署。
 
-工作流直接打包静态资源，无需安装依赖。发布内容包括首页、单文件预览、样式、脚本、数据、练习页与本地 D3。
+网页上传版先将 `SM6351_Pre_latest.zip` 解压到 `_site`，运行 260 项数据与练习检查，再发布当前首页、样式、脚本、数据、字体、练习页、学生 ZIP 与本地 D3。无需安装前端依赖。测试、脚本、备课文档和展示者答案不放入发布目录。
+
+完整工程 ZIP 内也保留了普通的多文件发布工作流。之后在本地将工程解压到仓库根目录并提交全部源码时，该工作流会直接发布当前多文件工程。
 
 部署成功后的访问地址：
 
 - [教学网站](https://guihuala.github.io/SM6351_Pre/)
-- [课堂练习](https://guihuala.github.io/SM6351_Pre/exercises/)
+- [课堂练习](https://guihuala.github.io/SM6351_Pre/learn/index.html)
 
 以工作流中 `github-pages` 环境显示的实际发布地址为准。
 
 ## 项目结构
 
+仓库根目录的网页上传版：
+
 ```text
-.github/workflows/deploy-pages.yml  GitHub Pages 自动部署
-index.html                        教学主页面
-PREVIEW.html                      内嵌资源的独立预览快照
-style.css                         页面样式与响应式布局
-js/
-  lax-config.js                   标签、颜色、顺序与数据路径
-  lax-data.js                     CSV 加载、校验、筛选与聚合
-  lax-charts.js                   坐标轴、折线、月份联动与表格
-  lax-tabs.js                     页签、键盘与历史导航
-  main.js                         状态、控件事件与初始化
-exercises/                        独立练习页、TODO 与参考答案
-data/                             CSV、来源记录与快照统计
-vendor/d3.v7.min.js                本地 D3 库
-screenshots/                      早期版本截图，供历史对照
-START_HERE.txt                    预览包交接说明
-VALIDATION.md                     早期版本运行检查记录
+.github/workflows/deploy-pages.yml  解压当前工程、检查并自动部署
+index.html                        当前内嵌资源首页
+PREVIEW.html                      当前内嵌资源预览
+SM6351_Pre_latest.zip              当前完整可编辑工程
+README.md                         项目说明
 ```
 
-修改页面内容请编辑 `index.html`，修改视觉样式请编辑 `style.css`，修改数据处理与交互请编辑 `js/` 下的对应文件。
+解压完整工程后的主要文件：
+
+```text
+index.html / app.css               页面内容、样式与响应式布局
+app/
+  data.js                         CSV 加载、校验、筛选与聚合
+  chart.js                        坐标轴、折线、月份联动与峰值
+  main.js                         页签、状态、控件事件与初始化
+  lessons.js / steps.js            关键代码片段与运行示例
+  practice.js                     两处编辑区、运行、检查与导出
+learn/                            独立练习页、TODO 与展示者答案
+steps/                            五个运行示例
+data/                             CSV 与来源记录
+vendor/d3.v7.min.js                本地 D3 库
+fonts/                            Nunito 字体与许可证
+downloads/                        当前单文件网页与学生练习 ZIP
+tests/verify-data.cjs              260 项数据和练习检查
+scripts/make-offline.py            重新生成单文件版
+```
+
+修改页面内容请编辑解压后的 `index.html`，修改视觉样式请编辑 `app.css`，修改数据处理与交互请编辑 `app/` 下的对应文件。仓库中的早期 `js/`、`exercises/`、`style.css`、`screenshots/` 和交接说明保留供对照，不是当前工作流的发布来源。
 
 ## 验证记录
 
 [VALIDATION.md](VALIDATION.md) 保留了 2026-10-27 的运行检查记录；`screenshots/` 为早期视觉版本截图。它们不能代表当前简约预览版已完成全部浏览器交互与手机布局验收。预览包状态与待验证事项见 [START_HERE.txt](START_HERE.txt)。
+
+
+当前工程另有 `tests/verify-data.cjs`：260 项检查已通过，覆盖源数据合计、缺失值、真实零值、并列峰值和排序恢复。以上检查不等同于所有手机布局均已验收。
