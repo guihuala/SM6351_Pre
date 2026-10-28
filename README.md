@@ -1,109 +1,116 @@
-# Week 10 · LAX Small Multiples Workshop
+# LAX Small Multiples Workshop
 
-SM6351 Information Visualization 的英文教学网站，主题为 **用 D3 实现 Interactive Small Multiples**。项目独立放在 `Presentations/`，不与 `Assignments/` 中的复刻作业混放。
+SM6351 Information Visualization 的英文交互教学网站，使用 D3.js 和洛杉矶国际机场（LAX）真实月度客流数据，讲解如何构建与交互小多图（Small Multiples）。学习路径为 **Demo → Build → Interact → Practice**。
 
-本版采用复古航空旅行手册视觉：奶油白纸张、海军蓝印刷感标题、砖红章节标记与暖灰细线。无图片横幅，打开后直接看到研究问题、紧凑工具栏和完成版图表。教学顺序为：观察效果 → 逐步实现 → 加入交互 → 动手练习。适合两个人完成约 25 分钟课堂教学，不需要 slides。
+项目采用原生 HTML、CSS 和 JavaScript，无需安装前端依赖或执行构建。D3 与 CSV 数据均保存在仓库中。
 
-## 打开方式
+## 快速开始
 
-- 教学网站：[index.html](index.html)。
-- 课堂练习：[exercises/index.html](exercises/index.html)。
-- 当前检查时未找到 `TEAM-PLAN.md`；此次保留现有教学内容，不另行恢复可能已被移除的分工文件。
+### 本地运行
 
-整个文件夹可以单独分享。D3、数据、脚本和样式均在项目内，教学与图表无需联网；外部数据来源链接需要联网。已移除外部照片及其署名，不再有图片网络依赖。
+在项目根目录执行（需已安装 Python 3）：
 
-## GitHub Pages 自动部署
+```bash
+python3 -m http.server 8000
+```
 
-工作流位于 [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)。推送到 `main` 时自动部署，也可在 GitHub 的 Actions 页面选择 **Deploy to GitHub Pages → Run workflow** 手动运行。
+打开 [教学网站](http://localhost:8000/) 或 [课堂练习](http://localhost:8000/exercises/)。也可以在 VS Code 中使用 Live Server 打开 `index.html`。
 
-首次使用时，在仓库 **Settings → Pages → Build and deployment → Source** 中选择 **GitHub Actions**，然后推送工作流。项目是纯静态网站，无需安装依赖或构建；工作流会发布首页、独立预览页、样式、脚本、数据、练习页及本地 D3。
+源码页面通过 HTTP 加载 CSV，请通过本地服务访问。启动后，图表和教学内容使用本地资源，无需连接外网。
 
-当前仓库部署成功后的地址为：https://guihuala.github.io/SM6351_Pre/ 。练习页位于该地址下的 `exercises/`。实际发布地址也会显示在工作流的 `github-pages` 部署环境中。
+### 单文件预览
 
-## 页签
+双击 [PREVIEW.html](PREVIEW.html) 可离线查看主站预览，所需样式、脚本、D3 和数据已内嵌。
 
-| 页签 | 教学内容 | 课堂用途 |
-| --- | --- | --- |
-| Demo | 研究问题、紧凑分段控件和完整交互图表，详细说明移至图表下方 | 先展示同学最终要得到的效果 |
-| Build | CSV 解析、分组、月份对齐、共同坐标轴、逐面板绘图；叠加图与小多图对比 | 讲清静态小多图如何实现 |
-| Interact | 两个航站楼的实时示例、选择→状态→处理→更新链、关键代码；同步月份作为进阶内容 | 说明事件如何影响数据与图表 |
-| Practice | 两个代码练习、提示、可展开答案、预期结果和可运行练习页 | 让同学修改代码并解释变化 |
+`PREVIEW.html` 是独立快照，修改 `index.html`、`style.css` 或 `js/` 后不会自动同步到它。开发与课堂练习请使用本地服务运行源码。
 
-## 分步实现说明
+## 教学内容
 
-Build 和 Interact 中的代码是**带上下文的关键片段**，不是可单独运行的完整程序。
-每一步都链接到对应源文件，说明作用、前提和预期结果。
+| 页签 | 内容 |
+| --- | --- |
+| Demo | 完整的小多图，支持年份、进出港、客流类别、坐标轴模式、排序及月份联动 |
+| Build | CSV 解析、分组、月份对齐、共享坐标轴、逐面板绘图，以及叠加图与小多图的对比 |
+| Interact | 通过实时示例讲解选择 → 状态 → 数据处理 → 更新图表的交互链路 |
+| Practice | 两道代码练习、提示、参考答案及独立练习页 |
 
-1. `lax-data.js`：读取 CSV，解析 UTC 月份和数值，排除无效记录并处理重复统计组合。
-2. 筛选年份和到达／出发后，使用 `d3.group` 按航站楼、月时间戳和国内／国际分类。
-3. 按共同月份序列生成面板，求和存在的记录，保留 `null`、实际组成数量与预期组成数量。
-4. `lax-charts.js`：建立共同时间轴与共享纵轴，重复创建每个航站楼的 SVG。
-5. 使用 `d3.line().defined(...)` 保留缺失月份的断线。
-6. `main.js`：控件更新 state，经 aggregate → draw → 月份恢复，更新图表、数值表及动态发现。
+Build 和 Interact 中的代码为带上下文的关键片段，完整实现见对应源文件。
 
 ## 课堂练习
 
-练习单独使用 `exercises/index.html`，不会破坏 Demo 完成版。
+通过本地服务打开 [exercises/index.html](exercises/index.html)，修改 [exercises/exercise.js](exercises/exercise.js) 中的两个 TODO：
 
-- 学生只修改 `exercises/exercise.js` 中的两个 TODO 返回值。
-- TODO 1：让 `chooseScale(selected)` 把选择传给纵轴模式。
-- TODO 2：让 `chooseTraffic(selected)` 把选择传给客流筛选。
-- 初始状态的两个函数固定返回 shared 和 Both，因此选择控件有意不生效；这是练习起点，不是完成版缺陷。
-- 修改后保存并刷新练习页，观察纵轴上限、线条类别、已应用状态和已报告总量。
-- 页面不提供在线代码编辑器或自动评分。Practice 中有人工判断的成功条件和可展开参考答案；`reference-answers.js` 仅供复制，不被自动加载。
-- 练习复用完成版数据处理和绘图函数；课堂重点是贯通控件、状态、聚合和绘图。D3 内部的具体实现由 Build / Interact 讲解。
+1. `chooseScale(selected)`：让所选值控制共享或独立纵轴。
+2. `chooseTraffic(selected)`：让所选值控制国内或国际客流筛选。
 
-## 数据与功能
+初始代码固定返回 `shared` 和 `Both`，因此这两个选择控件暂时不会改变图表；这是练习的预期起点。
 
-来源：[Los Angeles Open Data · Passenger Traffic by Terminal](https://data.lacity.org/Transportation/Los-Angeles-International-Airport-Passenger-Traffi/g3qu-7q2u/about_data)。
+保存后刷新页面，检查纵轴上限、线条类别、已应用状态和已报告总量是否随选择更新。练习使用快照中最新完整报告年（当前为 2022 年）。
 
-- 下载日期 2026-10-27；实际报告范围 2006-01 至 2023-10。
-- 7,883 条原始记录，12 个航站楼类别；当前快照未发现重复统计组合。
-- 默认 Demo 为 2018–2022；练习固定到快照最新完整报告年 2022。
-- 一条记录为月份 × 航站楼 × 到达／出发 × 国内／国际，附客流和提取时间。
-- 客流是流动人次，不是独立人数。缺失不补零，部分总量以 `*` 标记。完整报告年不保证每个类别都完整。
-- TBIT 和 TBIT West Gates 保持独立。排序按已报告总量，不代表运力。
-- 保留时间筛选、预设、统一／独立纵轴、排序、同步悬停、键盘月份滑块及数值表。
-- 不通过流量变化单独推断因果。快照来源记录见 [data/provenance.json](data/provenance.json)。
+参考答案见 [exercises/reference-answers.js](exercises/reference-answers.js)，该文件不会自动加载。页面不提供在线代码编辑器或自动评分。
 
-## 文件结构
+## 数据说明
 
-| 文件 | 职责 |
+数据集为 Los Angeles Open Data 的 **Los Angeles International Airport — Passenger Traffic By Terminal**。来源链接、获取方式与类别列表见 [data/provenance.json](data/provenance.json)，快照统计见 [data/preview-validation.json](data/preview-validation.json)。
+
+| 项目 | 当前快照 |
 | --- | --- |
-| `index.html` | 四个教学页签、实现片段、提示与答案 |
-| `style.css` | 统一复古手册主题变量、导航、代码排版与响应式布局 |
-| `js/lax-tabs.js` | 页签、键盘及历史导航 |
-| `js/lax-config.js` | 标签、颜色与顺序 |
-| `js/lax-data.js` | 数据加载和聚合 |
-| `js/lax-charts.js` | 图表、月份联动和表格 |
-| `js/main.js` | 完成版状态、预设、筛选和初始化 |
-| `exercises/index.html` | 单独的可运行练习页 |
-| `exercises/exercise.js` | 两个 TODO 及已完成的支撑代码 |
-| `exercises/reference-answers.js` | 两个函数的参考答案 |
-| `data/` | CSV 快照与来源记录 |
-| `vendor/d3.v7.min.js` | 本地 D3 |
-| `screenshots/` | Demo、Build、Interact、Practice、练习页及窄屏实机截图 |
-| `VALIDATION.md` | 本轮运行检查、范围与截图说明 |
+| 获取日期 | 2026-10-27 |
+| 报告范围 | 2006-01 至 2023-10 |
+| 原始记录 | 7,883 条 |
+| 航站楼类别 | 12 类 |
+| 重复统计组合 | 0 |
 
-## 视觉与交互规范
+解读图表时请注意：
 
-- 主题变量集中在 `style.css`：纸张 `#F6F0E3`、内容 `#FFFCF5`、海军蓝 `#193B4A`、砖红 `#B64B3C`、正文 `#2C3032`、边线 `#CDBFA7`。
-- 不使用外部字体或纹理。标题使用 Arial Narrow / Avenir Next Condensed 等系统字体栈，正文使用系统无衬线字体，编号与代码使用系统等宽字体。不同系统会有字体回退差异。
-- 国内客流仍为 `#2463A0` 蓝实线，国际为 `#AF501E` 橙虚线；Demo、实时示例、练习页与图例保持一致。Total 保留为额外合计选项。
-- Demo 的 traffic / scale 从下拉框改为原生 radio 分段组，支持 Tab 与方向键；其他筛选保留下拉框。原有预设在图表下方折叠区域中。
-- 航站楼卡片使用原始 T1–T8、TBIT 及显示简称 WEST、IMP、MISC，同时保留完整名称。简称不改变分组或数据。
-- Build / Interact 步骤宽屏左右排版，窄屏按解释→代码→结果排列；Practice 使用两张编号任务卡，参考答案仍默认收起。
-- 独立练习页继续保留两个固定返回值 TODO；未将其自动改为完成版。
+- 客流表示旅客流动人次，包含到达与出发，不能视为去重人数。
+- 2023 年只有 1–10 月，不能直接与完整年份比较全年总量。
+- 缺失月份保留空缺；`*` 表示预期组成项不全的部分小计。
+- TBIT 与 TBIT West Gates 保持为独立类别。
+- 共享纵轴适合比较绝对量，独立纵轴适合观察各面板内部趋势；独立纵轴下的线条高度不能直接跨面板比较。
+- 按已报告总量排序不代表运力排名，流量变化本身也不能证明因果关系。
 
-## 本轮验证与截图
+## GitHub Pages 部署
 
-按本轮明确要求进行了实际浏览器操作、JavaScript 语法检查和本地引用检查。记录见 [VALIDATION.md](VALIDATION.md)。
+工作流位于 [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)，推送到 `main` 时自动运行，也支持手动触发。
 
-- [Demo](screenshots/01-demo.png)
-- [Build](screenshots/02-build.png)
-- [Interact](screenshots/03-interact.png)
-- [Practice](screenshots/04-practice.png)
-- [独立练习页](screenshots/05-exercise.png)
-- [手机宽度 Demo](screenshots/06-demo-mobile.png)
+首次部署：
 
-通过本地 Web Server 打开本项目，避免直接使用 file:// 加载 CSV。所有功能使用项目内 D3 与数据，网络不是图表运行的前提。
+1. 在 GitHub 仓库的 **Settings → Pages → Build and deployment → Source** 中选择 **GitHub Actions**。
+2. 将工作流与项目文件提交并推送到 `main`。
+3. 在 **Actions → Deploy to GitHub Pages** 查看结果；也可以选择 **Run workflow** 手动部署。
+
+工作流直接打包静态资源，无需安装依赖。发布内容包括首页、单文件预览、样式、脚本、数据、练习页与本地 D3。
+
+部署成功后的访问地址：
+
+- [教学网站](https://guihuala.github.io/SM6351_Pre/)
+- [课堂练习](https://guihuala.github.io/SM6351_Pre/exercises/)
+
+以工作流中 `github-pages` 环境显示的实际发布地址为准。
+
+## 项目结构
+
+```text
+.github/workflows/deploy-pages.yml  GitHub Pages 自动部署
+index.html                        教学主页面
+PREVIEW.html                      内嵌资源的独立预览快照
+style.css                         页面样式与响应式布局
+js/
+  lax-config.js                   标签、颜色、顺序与数据路径
+  lax-data.js                     CSV 加载、校验、筛选与聚合
+  lax-charts.js                   坐标轴、折线、月份联动与表格
+  lax-tabs.js                     页签、键盘与历史导航
+  main.js                         状态、控件事件与初始化
+exercises/                        独立练习页、TODO 与参考答案
+data/                             CSV、来源记录与快照统计
+vendor/d3.v7.min.js                本地 D3 库
+screenshots/                      早期版本截图，供历史对照
+START_HERE.txt                    预览包交接说明
+VALIDATION.md                     早期版本运行检查记录
+```
+
+修改页面内容请编辑 `index.html`，修改视觉样式请编辑 `style.css`，修改数据处理与交互请编辑 `js/` 下的对应文件。
+
+## 验证记录
+
+[VALIDATION.md](VALIDATION.md) 保留了 2026-10-27 的运行检查记录；`screenshots/` 为早期视觉版本截图。它们不能代表当前简约预览版已完成全部浏览器交互与手机布局验收。预览包状态与待验证事项见 [START_HERE.txt](START_HERE.txt)。
