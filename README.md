@@ -1,6 +1,6 @@
 # LAX Small Multiples Workshop
 
-SM6351 Information Visualization 的英文交互教学网站，使用 D3.js 和洛杉矶国际机场（LAX）真实月度客流数据，讲解如何构建与交互小多图（Small Multiples）。学习路径为 **Data → Charts → Code → Workspace → Files**。旧链接 `#demo`、`#build`、`#interact` 仍可打开对应的新页面。
+SM6351 Information Visualization 的英文交互教学网站，使用 D3.js 和洛杉矶国际机场（LAX）真实月度客流数据，讲解如何构建与交互小多图（Small Multiples）。学习路径为 **Data → Charts → Code → Workspace**。旧链接 `#demo`、`#build`、`#interact` 仍可打开对应的新页面。
 
 项目采用原生 HTML、CSS 和 JavaScript，无需安装前端依赖。D3 与 CSV 数据随完整工程保存在仓库中的 `SM6351_Pre_latest.zip` 内。页面以英文为主，右上角可显示或隐藏中文。
 
@@ -34,7 +34,6 @@ python3 -m http.server 8000
 | Charts | 各航站楼小多图，支持年份、进出港、客流类别、坐标轴模式、排序及年月联动 |
 | Code | 五段关键 D3 片段与运行示例：读取、分组、月份对齐、坐标轴、折线和控件 |
 | Workspace | 两道可编辑代码练习、分步提示、短答案、运行结果和独立练习页 |
-| Files | 数据字段、缺失记录说明和未完成练习包 |
 
 Code 保留了读取 CSV、分组、月份对齐、共享坐标轴和逐面板绘图的说明。控件示例继续展示“选择 → 状态 → 数据处理 → 更新图表”的交互链路。网页只展示带上下文的关键片段，完整实现见解压后的对应源文件。
 
@@ -133,3 +132,7 @@ scripts/make-offline.py            重新生成单文件版
 
 
 当前工程另有 `tests/verify-data.cjs`：260 项检查已通过，覆盖源数据合计、缺失值、真实零值、并列峰值和排序恢复。以上检查不等同于所有手机布局均已验收。
+
+## Visual assets
+
+Navigation and teaching SVGs: [Lucide](https://lucide.dev), ISC license; original files and license are in `assets/icons/`. The LAX chart favicon is custom. Icons are inline, and the favicon is embedded so the offline edition works independently.
