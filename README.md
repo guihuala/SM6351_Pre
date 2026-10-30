@@ -1,6 +1,6 @@
 # LAX Small Multiples Workshop
 
-SM6351 信息可视化课程项目，使用 D3.js 展示 LAX 各航站楼月度客流。包含 Data、Charts、Code 和 Workspace 四个页签，支持显示中文。
+SM6351 信息可视化课程项目，使用 D3.js 展示 LAX 各航站楼月度客流。包含 Data、Charts、Code 和 Workspace 四个页签，支持中英文切换。
 
 ## 访问与下载
 
