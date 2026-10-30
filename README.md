@@ -6,8 +6,10 @@ SM6351 信息可视化课程项目，使用 D3.js 展示 LAX 各航站楼月度�
 
 - [教学网站](https://guihuala.github.io/SM6351_Pre/)
 - [课堂练习](https://guihuala.github.io/SM6351_Pre/learn/index.html)
-- [离线预览](PREVIEW.html)：下载后双击打开。
+- [离线页面](index.html)：下载后双击打开。
 - [完整工程](SM6351_Pre_latest.zip)：包含源码、数据和练习文件。
+
+根目录的 `index.html` 可直接打开。需要编辑源码时，请将完整工程解压到单独目录。`.github/` 用于自动部署，需保留。
 
 ## 本地运行
 
@@ -23,4 +25,4 @@ python3 -m http.server 8000
 
 数据来自 [Los Angeles Open Data](https://data.lacity.org/Transportation/Los-Angeles-International-Airport-Passenger-Traffi/g3qu-7q2u/about_data)，范围为 2006 年 1 月至 2023 年 10 月。客流为到达与出发人次，2023 年为不完整年度。
 
-SVG 图标来自 [Lucide](https://lucide.dev)，许可证保存在 `assets/icons/LICENSE`。
+SVG 图标来自 [Lucide](https://lucide.dev)，许可证包含在离线页面及完整工程的 `assets/icons/LICENSE` 中。
